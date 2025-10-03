@@ -1,11 +1,11 @@
 services:
-  web:
-    build: .
-    container_name: django_app
-    command: >
-      sh -c "python manage.py migrate &&
-             python manage.py createsuperuser --noinput || true &&
-             gunicorn myproject.wsgi:application --bind 0.0.0.0:8000"
+
+  web-dev:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    container_name: django_dev_app
+    command: ["/app/entrypoint.sh", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     volumes:
       - .:/app
     ports:
@@ -13,8 +13,10 @@ services:
     env_file:
       - .env
     depends_on:
-      - postgres
-      - mongo
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
 
   postgres:
     image: postgres:15
@@ -24,17 +26,27 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
+      - "5433:5432"   # 👈 cambio aquí si 5432 ya está ocupado en Windows
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   mongo:
     image: mongo:6
     container_name: mongo_db
     ports:
-      - "27017:27017"
+      - "27018:27017"   # 👈 idem, para evitar choques si tienes Mongo local
     volumes:
       - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:

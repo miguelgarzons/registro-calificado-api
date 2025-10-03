@@ -1,0 +1,19 @@
+{
+  "name": "Django Dev Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "web-dev",
+  "workspaceFolder": "/app",
+  "settings": {
+    "python.defaultInterpreterPath": "/usr/local/bin/python",
+    "python.analysis.extraPaths": [
+      "/app"
+    ]
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-azuretools.vscode-docker",
+    "batisteo.vscode-django",
+    "ms-python.debugpy"
+  ],
+  "remoteUser": "root"
+}
