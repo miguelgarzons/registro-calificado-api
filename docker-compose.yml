@@ -1,14 +1,16 @@
 services:
-
   web-dev:
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
     container_name: django_dev_app
-    command: ["sh", "/app/entrypoint.sh", "python", "manage.py", "runserver", "0.0.0.0:8000"]
-
     volumes:
       - .:/app
+      # Montar las credenciales de Git desde Windows
+      - ${USERPROFILE}/.gitconfig:/root/.gitconfig:ro
+      - ${USERPROFILE}/.git-credentials:/root/.git-credentials:ro
+      # Si usas SSH para Git
+      - ${USERPROFILE}/.ssh:/root/.ssh:ro
     ports:
       - "8000:8000"
     env_file:
@@ -18,6 +20,8 @@ services:
         condition: service_healthy
       mongo:
         condition: service_healthy
+    stdin_open: true
+    tty: true
 
   postgres:
     image: postgres:15
@@ -27,7 +31,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5433:5432"   # 👈 cambio aquí si 5432 ya está ocupado en Windows
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -40,7 +44,7 @@ services:
     image: mongo:6
     container_name: mongo_db
     ports:
-      - "27018:27017"   # 👈 idem, para evitar choques si tienes Mongo local
+      - "27018:27017"
     volumes:
       - mongo_data:/data/db
     healthcheck:

@@ -2,6 +2,7 @@
 from app.Acta.domain.entities import Acta
 from app.Acta.domain.repositories import ActaRepository
 
+
 class CrearActa:
     def __init__(self, repo: ActaRepository):
         self.repo = repo

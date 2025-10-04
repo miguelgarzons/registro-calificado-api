@@ -1,6 +1,8 @@
 # app/Acta/domain/repositories.py
 from abc import ABC, abstractmethod
+
 from .entities import Acta
+
 
 class ActaRepository(ABC):
     @abstractmethod

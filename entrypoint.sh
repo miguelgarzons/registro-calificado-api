@@ -1,5 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 set -e
+
+echo "=== INICIANDO ENTRYPOINT ==="
+pre-commit install
+echo "Esperando a que las bases de datos estén listas..."
+sleep 5
 
 echo "Creando migraciones..."
 python manage.py makemigrations
