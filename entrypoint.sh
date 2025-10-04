@@ -1,10 +1,12 @@
+#!/bin/sh
+set -e
 
-echo "Instalando hooks de pre-commit..."
-pre-commit install
 echo "Creando migraciones..."
-python manage.py makemigrations --noinput
+python manage.py makemigrations
+
 echo "Ejecutando migraciones..."
 python manage.py migrate --noinput
+
 echo "Creando superusuario..."
 python manage.py shell << END
 from django.contrib.auth import get_user_model

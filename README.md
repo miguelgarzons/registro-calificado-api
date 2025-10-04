@@ -14,9 +14,10 @@ Aplicación **Django** implementando **arquitectura hexagonal (ports & adapters)
 - [VS Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers)
 - [Pyrefly](https://pyrefly.dev/) - Análisis estático de tipos
 
----
 
-📂 Estructura del proyecto
+## 📂 Estructura del proyecto
+
+```
 .
 ├── .devcontainer/                # Configuración para desarrollo en contenedor (VS Code Remote)
 │   ├── devcontainer.json

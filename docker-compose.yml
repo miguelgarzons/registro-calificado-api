@@ -5,7 +5,8 @@ services:
       context: .
       dockerfile: .devcontainer/Dockerfile
     container_name: django_dev_app
-    command: ["/app/entrypoint.sh", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: ["sh", "/app/entrypoint.sh", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+
     volumes:
       - .:/app
     ports:
