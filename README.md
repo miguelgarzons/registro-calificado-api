@@ -16,47 +16,50 @@ Aplicación **Django** implementando **arquitectura hexagonal (ports & adapters)
 
 ---
 
-## 📂 Estructura del proyecto
-
-```
+📂 Estructura del proyecto
 .
-├── .devcontainer/                # Configuración VS Code DevContainer
+├── .devcontainer/                # Configuración para desarrollo en contenedor (VS Code Remote)
 │   ├── devcontainer.json
 │   └── Dockerfile
 │
-├── app/                          # Código fuente Django
-│   ├── Acta/                     # App siguiendo arquitectura hexagonal
-│   │   ├── application/          # Casos de uso (DTOs, lógica de aplicación)
+├── app/                          # Código fuente principal de Django
+│   ├── Acta/                     # Módulo principal (puede haber más apps)
+│   │   ├── application/          # Capa de aplicación (casos de uso, DTOs)
 │   │   │   ├── dto.py
 │   │   │   └── use_cases.py
 │   │   │
-│   │   ├── domain/               # Lógica de negocio pura
-│   │   │   ├── entities.py
-│   │   │   ├── repositories.py
-│   │   │   ├── services.py
-│   │   │   └── value_objects.py
+│   │   ├── domain/               # Capa de dominio (reglas de negocio)
+│   │   │   ├── entities.py       # Entidades de negocio puras (sin dependencias de Django)
+│   │   │   ├── repositories.py   # Interfaces (ports) que definen cómo acceder a datos
+│   │   │   ├── services.py       # Lógica de negocio (servicios de dominio)
+│   │   │   └── value_objects.py  # Objetos de valor (tipados, invariantes)
 │   │   │
-│   │   ├── infrastructure/       # Adaptadores concretos
-│   │   │   ├── models.py
-│   │   │   ├── repositories.py
-│   │   │   ├── serializers.py
-│   │   │   └── views.py
+│   │   ├── infrastructure/       # Capa de infraestructura (adapters)
+│   │   │   ├── models.py         # Modelos Django (ORM)
+│   │   │   ├── repositories.py   # Implementaciones concretas de repositorios
+│   │   │   ├── serializers.py    # Serializadores de Django REST Framework
+│   │   │   └── views.py          # Endpoints y vistas (adapters HTTP)
 │   │   │
-│   │   ├── migrations/
-│   │   └── tests/
+│   │   ├── migrations/           # Migraciones de base de datos
+│   │   └── tests/                # Tests unitarios y de integración
+│   │       ├── test_views.py
+│   │       ├── test_models.py
+│   │       └── ...
 │   │
-│   ├── Acuerdo/                  # Otra app Django
-│   └── registro_calificado/      # Configuración global Django
+│   ├── Acuerdo/                  # Otra app de Django (ejemplo)
+│   └── registro_calificado/      # Otra app de Django (ejemplo)
 │
-├── venv/                         # Entorno virtual (uso local)
-├── .env                          # Variables de entorno
-├── docker-compose.yml            # Orquestación Docker
-├── Dockerfile                    # Imagen base Django
-├── entrypoint.sh                 # Script de inicio
-├── manage.py
-├── pyrefly.toml
-├── requirements.txt
-└── .pre-commit-config.yaml
+├── venv/                         # Entorno virtual local (si no se usa Docker)
+│
+├── .env                          # Variables de entorno (configuración sensible)
+├── .gitignore
+├── docker-compose.yml            # Orquestación con Docker Compose
+├── Dockerfile                    # Imagen base para Django
+├── entrypoint.sh                 # Script de arranque (migraciones + superusuario + servidor)
+├── manage.py                     # Script de administración de Django
+├── pyrefly.toml                  # Configuración de Pyrefly (tipado estático)
+├── requirements.txt              # Dependencias Python
+└── .pre-commit-config.yaml       # Hooks pre-commit (linting, formateo, etc.)
 ```
 
 ---
