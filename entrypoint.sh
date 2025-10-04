@@ -1,10 +1,8 @@
-#!/bin/sh
 
-# Aplicar migraciones
+echo "Creando migraciones..."
+python manage.py makemigrations --noinput
 echo "Ejecutando migraciones..."
 python manage.py migrate --noinput
-
-# Crear superusuario si no existe
 echo "Creando superusuario..."
 python manage.py shell << END
 from django.contrib.auth import get_user_model
@@ -20,6 +18,5 @@ else:
     print("Superusuario ya existe o faltan variables de entorno")
 END
 
-# Levantar el servidor
 echo "Iniciando servidor Django..."
 exec "$@"
