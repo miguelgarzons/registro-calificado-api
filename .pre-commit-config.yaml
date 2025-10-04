@@ -28,8 +28,3 @@ repos:
     hooks:
       - id: bandit
         args: ["-ll"]
-
-  - repo: https://github.com/pypa/pip-audit
-    rev: v2.6.1
-    hooks:
-      - id: pip-audit

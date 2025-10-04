@@ -1,4 +1,6 @@
 
+echo "Instalando hooks de pre-commit..."
+pre-commit install
 echo "Creando migraciones..."
 python manage.py makemigrations --noinput
 echo "Ejecutando migraciones..."
